@@ -1,3 +1,4 @@
+import java.awt.GridLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
@@ -12,30 +13,48 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 public class HangMan implements KeyListener {
 	JFrame frame = new JFrame();
-	JPanel panel = new JPanel();
-	JLabel label = new JLabel();
+	JPanel panel = new JPanel(new GridLayout(4, 1));
+	JLabel label1 = new JLabel();
+	JLabel label2 = new JLabel();
+	JLabel label3 = new JLabel();
+	JLabel label4 = new JLabel();
 	int total;
-	
+	int lives = 9;
+	int wordsRight = 0;
+	String blank = "";
+	String current;
 	Stack<String> words = new Stack<String>();
 
 	public static void main(String[] args) {
 		HangMan hang = new HangMan();
-		hang.runner();
+		hang.setUp();
+		hang.getWords();
+		hang.showBlanks();
 	}
 
 	ArrayList<Integer> randNums = new ArrayList<Integer>();
 
-	void runner() {
+	void setUp() {
 
 		frame.add(panel);
-		panel.add(label);
+		panel.add(label1);
+		panel.add(label2);
+		panel.add(label3);
+		panel.add(label4);
 		frame.setVisible(true);
-		frame.setSize(500, 50);
+		label1.setText("Guess A Letter");
+		label3.setText("You Have " + lives + " Lives Left!");
+		label4.setText("You Have Guessed " + wordsRight + " Words");
 		frame.addKeyListener(this);
+		frame.pack();
+
+	}
+
+	void getWords() {
+
 		String kik = JOptionPane.showInputDialog(null, "Gimme A Number");
 		int total = Integer.parseInt(kik);
 		JOptionPane.showMessageDialog(null, "Loading " + total + " Words, Good Luck");
@@ -46,13 +65,13 @@ public class HangMan implements KeyListener {
 				BufferedReader br = new BufferedReader(new FileReader("src/dictionary.txt"));
 				String word = br.readLine();
 				while (word != null) {
-					if(counter == rand) {
+					if (counter == rand) {
 						words.push(word);
 					}
 					counter++;
 					word = br.readLine();
 				}
-				System.out.println(words);
+
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -61,6 +80,17 @@ public class HangMan implements KeyListener {
 				e1.printStackTrace();
 			}
 		}
+		System.out.println(words);
+
+	}
+
+	void showBlanks() {
+		current = words.pop();
+		int lenght = current.length();
+		for (int i = 0; i < lenght; i++) {
+			blank += "_";
+		}
+		label2.setText(blank);
 	}
 
 	@Override
