@@ -26,6 +26,7 @@ public class HangMan implements KeyListener {
 	int wordsRight = 0;
 	String blank = "";
 	String current;
+
 	Stack<String> words = new Stack<String>();
 
 	public static void main(String[] args) {
@@ -33,6 +34,7 @@ public class HangMan implements KeyListener {
 		hang.setUp();
 		hang.getWords();
 		hang.showBlanks();
+		hang.getNewWord();
 	}
 
 	ArrayList<Integer> randNums = new ArrayList<Integer>();
@@ -57,7 +59,12 @@ public class HangMan implements KeyListener {
 
 		String kik = JOptionPane.showInputDialog(null, "Gimme A Number");
 		int total = Integer.parseInt(kik);
-		JOptionPane.showMessageDialog(null, "Loading " + total + " Words, Good Luck");
+		if(total==1) {
+			JOptionPane.showMessageDialog(null, "Loading " + total + " Word, Good Luck");
+		}
+		else {
+			JOptionPane.showMessageDialog(null, "Loading " + total + " Words, Good Luck");
+		}
 		for (int i = 0; i < total; i++) {
 			try {
 				int counter = 0;
@@ -87,16 +94,70 @@ public class HangMan implements KeyListener {
 	void showBlanks() {
 		current = words.pop();
 		int lenght = current.length();
+		blank = "";
 		for (int i = 0; i < lenght; i++) {
 			blank += "_";
 		}
 		label2.setText(blank);
 	}
 
+	void getNewWord() {
+		if (blank.equals(current)) {
+			wordsRight++;
+			if (wordsRight == 1) {
+				label4.setText("You Have Guessed " + wordsRight + " Word");
+			} else {
+				label4.setText("You Have Guessed " + wordsRight + " Words");
+			}
+			if (words.isEmpty()) {
+				if (wordsRight == 1) {
+					JOptionPane.showMessageDialog(null, "You Win! You Guessed " + wordsRight + " Word!");
+					frame.dispose();
+				} 
+				else {
+					JOptionPane.showMessageDialog(null, "You Win! You Guessed " + wordsRight + " Words!");
+					frame.dispose();
+				}
+			} else {
+				showBlanks();
+			}
+		}
+	}
+
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-
+		String newString = "";
+		for (int i = 0; i < current.length(); i++) {
+			if (e.getKeyChar() == current.charAt(i)) {
+				newString += current.charAt(i);
+			} else {
+				newString += blank.charAt(i);
+			}
+		}
+		blank = newString;
+		label2.setText(blank);
+		getNewWord();
+		if(current.contains(e.getKeyChar()+"")){
+		} else {
+			lives--;
+			if(lives==1) {
+				label3.setText("You Have " + lives + " Live Left!");
+			}
+			else{
+				label3.setText("You Have " + lives + " Lives Left!");
+			}
+			if(lives==0) {
+				if(wordsRight==1) {
+					JOptionPane.showMessageDialog(null, "You Lost! You Guessed "+ wordsRight +" Word");
+					frame.dispose();
+				}
+				else {		
+					JOptionPane.showMessageDialog(null, "You Lost! You Guessed "+ wordsRight +" Words");
+					frame.dispose();
+				}
+			}
+		}
 	}
 
 	@Override
