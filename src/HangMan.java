@@ -87,7 +87,7 @@ public class HangMan implements KeyListener {
 				e1.printStackTrace();
 			}
 		}
-		System.out.println(words);
+		//System.out.println(words);
 
 	}
 
@@ -150,10 +150,12 @@ public class HangMan implements KeyListener {
 			if(lives==0) {
 				if(wordsRight==1) {
 					JOptionPane.showMessageDialog(null, "You Lost! You Guessed "+ wordsRight +" Word");
+					JOptionPane.showMessageDialog(null, "The Word Was "+current);
 					frame.dispose();
 				}
 				else {		
 					JOptionPane.showMessageDialog(null, "You Lost! You Guessed "+ wordsRight +" Words");
+					JOptionPane.showMessageDialog(null, "The Word Was "+current);
 					frame.dispose();
 				}
 			}
