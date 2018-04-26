@@ -12,7 +12,7 @@ import java.util.Arrays;
 import org.junit.Ignore;
 import org.junit.Test;
 
-public class OncogeneTest<instance> {
+public class OncogeneTest {
 	private OncogeneDetector instance = new OncogeneDetector();
 
 	ArrayList<String> healthySequences = new ArrayList<String>(
