@@ -27,6 +27,7 @@ public class JFileSaver implements ActionListener {
 	JTextArea text = new JTextArea(50, 50);
 	String fileText;
 	String textFile;
+
 	public static void main(String[] args) {
 		JFileSaver jfs = new JFileSaver();
 		jfs.runner();
@@ -55,21 +56,21 @@ public class JFileSaver implements ActionListener {
 			int returnVal = jfc.showOpenDialog(null);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
 				fileFinder = jfc.getSelectedFile().getAbsolutePath();
-				System.out.println(fileName);
 			}
 			try {
 				br = new BufferedReader(new FileReader(fileFinder));
+
+				String line = br.readLine();
+				while (line != null) {
+					System.out.println(line);
+					fileText += line;
+					line = br.readLine();
+				}
 				br.close();
+				text.setText(fileText);
 			} catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			} catch (IOException e1) {
-				try {
-					fileText = br.readLine();
-				} catch (IOException e2) {
-					text.setText(fileText);
-
-					e2.printStackTrace();
-				}	
 				e1.printStackTrace();
 			}
 		}
@@ -81,9 +82,6 @@ public class JFileSaver implements ActionListener {
 				fw.write(fileText);
 				fw.close();
 			} catch (IOException e1) {
-
-				JOptionPane.showMessageDialog(null, "Saving...");
-				JOptionPane.showMessageDialog(null, "Done!");
 				e1.printStackTrace();
 			}
 		}
